@@ -1,0 +1,24 @@
+{
+"compilerOptions": {
+"target": "ES6",
+"module": "commonjs",
+"moduleResolution": "Node",
+"outDir": "./dist",
+"rootDir": "./src",
+"baseUrl": "./src",
+"paths": {
+"@models/*": ["models/*"],
+"@config/*": ["config/*"],
+"@controller/*": ["controller/*"],
+"@routes/*": ["routes/*"],
+"@utils/*": ["utils/*"],
+"@exception/*":["exception/*"],
+
+},
+"strict": true,
+"esModuleInterop": true,
+"experimentalDecorators": true,
+"emitDecoratorMetadata": true
+},
+"include": ["src"]
+}
