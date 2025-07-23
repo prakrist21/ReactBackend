@@ -7,6 +7,7 @@ import { CategoryRouter } from '@routes/category.route';
 import { BlogRouter } from '@routes/blog.route';
 import swaggerUIExpress from 'swagger-ui-express'
 import { exceptionHandler } from '@config/exception-filter';
+import { upload } from '@config/multer';
 const app=express();
 
 app.use(cors());
@@ -16,6 +17,9 @@ app.use("/api/role",roleRouter);
 app.use("/api/category",CategoryRouter);
 app.use("/api/blogs",BlogRouter);
 app.use("/docs",swaggerUIExpress.serve,swaggerUIExpress.setup());
+app.post("/api/upload",upload.single('file'),function(req,res,next){
+    console.log(req.file);
+})
 app.use(exceptionHandler);
 
 sequelize.sync({alter:true}).then(()=>{
