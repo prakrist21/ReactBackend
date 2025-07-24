@@ -19,4 +19,11 @@ const storage=multer.diskStorage({
     },
 })
 
-export const upload=multer({storage:storage});
+export const upload=multer({storage:storage,fileFilter:function(req,file,callback){
+    if(file.mimetype=='img/jpg'){
+        callback(null,true)
+    }
+    else{
+        callback(new Error("File format not supported"))
+    }
+}});
