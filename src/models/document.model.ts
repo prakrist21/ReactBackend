@@ -17,7 +17,7 @@ export class Document extends Model<Document>{
 
     public guid!:number;
 
-    @Column({ field: 'path', type: DataType.STRING, unique: true })
+    @Column//({ field: 'path', type: DataType.STRING, unique: true })
     public path!: string;
 
     @Column({ field: 'original_name', type: DataType.STRING })
