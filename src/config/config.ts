@@ -2,6 +2,7 @@
 import { Blog } from "@models/blogs.model";
 import { Category } from "@models/category.model";
 import { Document } from "@models/document.model";
+import { PostImage } from "@models/postImage.models";
 import { Role } from "@models/role.model";
 import { User } from "@models/user.model";
 import { UserDetails } from "@models/userDetail.model";
@@ -15,7 +16,7 @@ const sequelize=new Sequelize({
     password: "1234",
     database: "Demo",
     logging: true,
-    models:[Role,User,UserDetails,Category,Blog,Document],
+    models:[Role,User,UserDetails,Category,Blog,Document,PostImage],
 }); 
  
 export default sequelize;
