@@ -1,6 +1,7 @@
 import multer from "multer";
 import path from "path"
 import * as fs from 'fs'
+import { Request } from "express";
 const storage=multer.diskStorage({
     destination: function(req,file,callback){
         console.log('hello world')
@@ -19,11 +20,14 @@ const storage=multer.diskStorage({
     },
 })
 
-export const upload=multer({storage:storage,fileFilter:function(req,file,callback){
-    if(file.mimetype=='img/jpg'){
+
+
+const fileFilter=(req:Request,file:Express.Multer.File,callback:any)=>{
+    if(file.mimetype=='image/jpg'){
         callback(null,true)
     }
     else{
         callback(new Error("File format not supported"))
     }
-}});
+}
+export const upload=multer({storage:storage,fileFilter:fileFilter,});
