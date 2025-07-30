@@ -1,5 +1,8 @@
 
 import { Blog } from "@models/blogs.model";
+import { Document } from "@models/document.model";
+import { PostImage } from "@models/postImage.models";
+import { Role } from "@models/role.model";
 import { Request,Response } from "express"
 import { QueryTypes } from "sequelize";
 interface blogRequest{
@@ -40,7 +43,37 @@ export class BlogController{
         newBlog.userId=request.userId;
         newBlog.categoryId=request.categoryId;
         await newBlog.save();
-        res.send(newBlog);
+
+
+
+        const files=req?.files as Express.Multer.File[];
+
+        // files?.map((file)=>{
+
+        // })
+        
+        for (let i=0;i<files?.length;i++){
+            const document=new Document();
+            document.size=files[i].size;
+            document.mime_type=files[i].mimetype;
+            document.original_name=files[i].originalname;
+            document.path=files[i].path;
+            document.fileName=files[i].filename;
+            await document.save();
+
+            const postImage=new PostImage()
+            postImage.postId=postImage.id;
+            postImage.documentId=document.id;
+            await postImage.save()   
+        }
+
+
+
+        res.send({
+            message:"Post has been saved",
+            status: true,
+            data: Role,
+        });
     }
 
 }

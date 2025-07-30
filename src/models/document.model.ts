@@ -23,6 +23,9 @@ export class Document extends Model<Document>{
     @Column({ field: 'original_name', type: DataType.STRING })
     public original_name!: string;
 
+    @Column({ field: 'file_name' })
+    public fileName!: string;
+
     @Column({ field: 'size', type: DataType.STRING })
     public size!: number;
     
