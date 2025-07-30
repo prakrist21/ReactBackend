@@ -11,11 +11,9 @@ import { Category } from "./category.model";
     })
 export class Document extends Model<Document>{
 
-    @AutoIncrement
     @PrimaryKey
-    @Column
-
-    public guid!:number;
+    @Column({ field: 'doc_guid', type: DataType.UUID,defaultValue: DataType.UUIDV4 })
+    public guid!:string;
 
     @Column//({ field: 'path', type: DataType.STRING, unique: true })
     public path!: string;

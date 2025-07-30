@@ -62,8 +62,8 @@ export class BlogController{
             await document.save();
 
             const postImage=new PostImage()
-            postImage.postId=postImage.id;
-            postImage.documentId=document.id;
+            postImage.postId=newBlog.id;
+            postImage.documentId=document.guid;
             await postImage.save()   
         }
 

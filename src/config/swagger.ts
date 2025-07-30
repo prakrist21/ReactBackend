@@ -10,7 +10,7 @@ const swaggerconfig: Options = {
     },
     basePath: "api",
   },
-  apis: ["../routes//*.ts"],
+  apis: ["../routes/**/*.ts"],
 };
 
 const docs = swaggerdocs(swaggerconfig);
