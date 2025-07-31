@@ -15,8 +15,17 @@ interface blogRequest{
 }
 export class BlogController{
     async getBlog(req:Request,res:Response){
+    const path='http://localhost:5000/uploads/'
 
-        const getAllBlog=await Blog.findAll();
+        const getAllBlog=await Blog.sequelize?.query(`select b.id, b.title,b.slug,b.description,b.hashtag,c.name as categoryName,u.email as userEmail,u.username,
+json_agg(concat(:path,d.file_name)) as images from blogs b
+inner join categories c on c.id=b.category_id
+inner join users u on u.id=b.posted_by
+left join post_image pi on pi.post_id=b.id
+inner join documents d on d.doc_guid=pi.document_id::uuid
+group by 1,2,3,4,5,6,7,8;`,{
+    type:QueryTypes.SELECT,replacements:{path}
+});
         res.send({data: getAllBlog,
         message: "Categories has been fetched successfully.",
         status: true,})

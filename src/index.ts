@@ -9,6 +9,7 @@ import swaggerUIExpress from 'swagger-ui-express'
 import { exceptionHandler } from '@config/exception-filter';
 import { upload } from '@config/multer';
 import { DocumentRouter } from '@routes/document.route';
+import path from 'path';
 const app=express();
 
 app.use(cors());
@@ -19,6 +20,7 @@ app.use("/api/category",CategoryRouter);
 app.use("/api/blogs",BlogRouter);
 app.use("/api/document",DocumentRouter);
 app.use("/docs",swaggerUIExpress.serve,swaggerUIExpress.setup());
+app.use(express.static(path.join(__dirname,"public")));
 app.post("/api/upload",upload.single('file'),function(req,res,next){
     console.log(req.file);
 })

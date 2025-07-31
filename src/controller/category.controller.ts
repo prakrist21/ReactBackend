@@ -22,7 +22,7 @@ export class CategoryController{
         newCategory.title=request.title;
         newCategory.save();
         res.send(newCategory);
-    }
+    }   
 
     // async getCategoryById(req:Request,res:Response){
     //         const roleId=req.params.id;
