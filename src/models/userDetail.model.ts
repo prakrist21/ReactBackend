@@ -30,7 +30,7 @@ export class UserDetails extends Model<UserDetails>{
     @Column({type:DataType.STRING(250)})
     addredd!:string;
 
-    @Column({field:"Phone_number",type:DataType.STRING(10)})
+    @Column({field:"Phone_number",type:DataType.STRING(100)})
     phoneNumber!:string
 
     // Foreign key

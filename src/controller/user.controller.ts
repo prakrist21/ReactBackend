@@ -1,6 +1,7 @@
 import { User } from "@models/user.model"
 import { UserDetails } from "@models/userDetail.model"
 import { Request,Response } from "express"
+import * as bcrypt from "bcrypt";
 interface UserRequest{
     username:string
     password:string
@@ -27,7 +28,8 @@ export class UserController{
         const newUser=await User.create();
         const newUserDetails=await UserDetails.create();
         newUser.username=request.username;
-        newUser.password=request.password;
+        const hashpassword = await bcrypt.hash(request.password, 10);
+        newUser.password=hashpassword;
         newUser.isActive=request.isActive;
         newUser.email=request.email;
         await  newUser.save();
@@ -40,7 +42,8 @@ export class UserController{
         newUserDetails.phoneNumber=request.phoneNumber;
         newUserDetails.userId=request.UserId;
 
- 
+        // const hashpassword = await bcrypt.hash(payload.password, 10);
+        // user.password = hashpassword;
       await newUserDetails.save()
       res.send({message:"User and userdetails saved", status: true});
 
