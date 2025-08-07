@@ -7,7 +7,9 @@ export const jwtMiddleware=(req:Request,res:Response,next:NextFunction)=>{
     if (publicPath.includes(req.path)){
         next();
     }
-    console.log(req.headers.authorization)
+    else{
+        console.log(req.headers.authorization)
+    console.log(req.path);
     const token=req.headers.authorization?.split(" ")[1] as string;
     if (!token){
         res.status(401).json({
@@ -15,6 +17,7 @@ export const jwtMiddleware=(req:Request,res:Response,next:NextFunction)=>{
             status: false,
         });
     }
+   
     console.log(token)
     try{
         const verifiedToken=decodeToken(token)
@@ -29,5 +32,9 @@ export const jwtMiddleware=(req:Request,res:Response,next:NextFunction)=>{
             status: false,
         });
     }
+    }
+    
+    
+    
 
 }

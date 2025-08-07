@@ -6,6 +6,7 @@ import { validate } from "class-validator";
 import { Request, Response } from "express";
 import * as bcrypt from 'bcrypt';
 import { generateToken } from "@utils/jwt";
+import { UserDetails } from "@models/userDetail.model";
 
 export class AuthController{
     async login(req:Request,res:Response){
@@ -43,6 +44,34 @@ export class AuthController{
             })
         }
 
+    }
+    async init(req:Request,res:Response){
+        //@ts-ignore
+        const user=req.user;
+        const currentUser=await User.findOne({
+            where:{
+                id:user.id
+            },
+            attributes: {exclude: ["password"]},
+            include: [UserDetails],
+        })
+
+        // const userDetail=UserDetails.findOne({
+        //     where:{
+        //         userId:user.id;
+        //     }
+        // })
+
+        //@ts-ignore
+        delete currentUser.password;
+
+        if(!currentUser){
+            throw new NotFoundException("User not found")
+        }
+        res.status(200).send({
+            user:currentUser
+        })
+        console.log(user)
     }
 }
 
