@@ -3,9 +3,10 @@ import { NextFunction, Response, Request } from "express";
 
 export const jwtMiddleware=(req:Request,res:Response,next:NextFunction)=>{
     console.log("------------------------------------------------------------------------",req.path)
-    const publicPath=["/api/auth/login"]
-    if (publicPath.includes(req.path)){
-        next();
+    const publicPath=["/api/auth/login","/uploads/"]
+    if (publicPath.some((path)=>req.path.startsWith(path))){
+        console.log("Bypass")
+        return next();
     }
     else{
         console.log(req.headers.authorization)

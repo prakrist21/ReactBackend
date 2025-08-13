@@ -9,9 +9,9 @@ interface blogRequest{
     slug:string
     title:string
     description: string
-    hastag: string
-    categoryId: number
-    userId: number
+    hashtag: string
+    category: number
+    user: number
 }
 export class BlogController{
     async getBlog(req:Request,res:Response){
@@ -19,8 +19,8 @@ export class BlogController{
 
         const getAllBlog=await Blog.sequelize?.query(`select b.id, b.title,b.slug,b.description,b.hashtag,c.name as categoryName,u.email as userEmail,u.username,
 json_agg(concat(:path,d.file_name)) as images from blogs b
-inner join categories c on c.id=b.category_id
-inner join users u on u.id=b.posted_by
+left join categories c on c.id=b.category_id
+left join users u on u.id=b.posted_by
 left join post_image pi on pi.post_id=b.id
 left join documents d on d.doc_guid=pi.document_id::uuid
 group by 1,2,3,4,5,6,7,8;`,{
@@ -39,6 +39,7 @@ group by 1,2,3,4,5,6,7,8;`,{
             replacements:{slug:slug+'%'},
             type:QueryTypes.SELECT
         })
+        console.log("beore saving post----------------")
         console.log(alreadyExist)
         const counts=parseInt(alreadyExist[0].count)
         if (counts>0){
@@ -48,11 +49,12 @@ group by 1,2,3,4,5,6,7,8;`,{
         newBlog.slug=slug;
         newBlog.title=request.title;
         newBlog.description=request.description;
-        newBlog.hashtag=request.hastag;
-        newBlog.userId=request.userId;
-        newBlog.categoryId=request.categoryId;
+        newBlog.hashtag=request.hashtag;
+        newBlog.userId=request.user;
+        newBlog.categoryId=request.category;
         await newBlog.save();
 
+        console.log("post saved -------------------")
 
 
         const files=req?.files as Express.Multer.File[];
@@ -76,7 +78,7 @@ group by 1,2,3,4,5,6,7,8;`,{
             await postImage.save()   
         }
 
-
+console.log("image saved-----------------")
 
         res.send({
             message:"Post has been saved",

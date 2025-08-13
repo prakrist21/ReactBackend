@@ -24,7 +24,8 @@ const storage=multer.diskStorage({
 
 const fileFilter=(req:Request,file:Express.Multer.File,callback:any)=>{
     console.log(file)
-    const valistype=["image/jpg","image/png"];
+    const valistype=["image/jpg","image/png","image/jpeg"];
+    console.log(file.mimetype)
     if(valistype.includes(file.mimetype)){
         callback(null,true)
     }
