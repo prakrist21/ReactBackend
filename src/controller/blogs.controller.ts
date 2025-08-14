@@ -3,7 +3,7 @@ import { Blog } from "@models/blogs.model";
 import { Document } from "@models/document.model";
 import { PostImage } from "@models/postImage.models";
 import { Role } from "@models/role.model";
-import { Request,Response } from "express"
+import { request, Request,Response } from "express"
 import { QueryTypes } from "sequelize";
 interface blogRequest{
     slug:string
@@ -16,6 +16,12 @@ interface blogRequest{
 export class BlogController{
     async getBlog(req:Request,res:Response){
     const path='http://localhost:5000/uploads/'
+    console.log(req.query)
+    const pageNumber:number=parseInt((req.query.pageNumber as string)||'1')
+    const pageSize:number=parseInt(req.query.perPage as string)||10
+    const offset=(pageNumber-1)*pageSize;
+    console.log(req.query)
+    console.log(pageNumber,pageSize,offset)
 
         const getAllBlog=await Blog.sequelize?.query(`select b.id, b.title,b.slug,b.description,b.hashtag,c.name as categoryName,u.email as userEmail,u.username,
 json_agg(concat(:path,d.file_name)) as images from blogs b
@@ -23,12 +29,16 @@ left join categories c on c.id=b.category_id
 left join users u on u.id=b.posted_by
 left join post_image pi on pi.post_id=b.id
 left join documents d on d.doc_guid=pi.document_id::uuid
-group by 1,2,3,4,5,6,7,8;`,{
-    type:QueryTypes.SELECT,replacements:{path}
+group by 1,2,3,4,5,6,7,8
+limit :limit offset :offset;`,{
+    type:QueryTypes.SELECT,replacements:{path,limit:pageSize,offset}
 });
-        res.send({data: getAllBlog,
+
+        const totalPost=await Blog.count()
+        res.send({
         message: "Categories has been fetched successfully.",
-        status: true,})
+        status: true,
+        data: {item:getAllBlog,count:totalPost}})
     }
 
     async saveBlog(req:Request,res:Response){
